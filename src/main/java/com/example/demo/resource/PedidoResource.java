@@ -3,10 +3,12 @@ package com.example.demo.resource;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +62,13 @@ public class PedidoResource {
 		return ResponseEntity.ok(pedidos);
 	}
 
+	@RequestMapping(value = "/{codigo}")
+	public ResponseEntity<Optional<Pedido>> listarPorId(@PathVariable String codigo) {
+		// optinal : pode ter ou nao 		// stream percorre tudo
+		Optional<Pedido> pedido = pedidos.stream().filter(objPedido -> objPedido.getCodigo().equals(codigo)).findFirst();
+		return ResponseEntity.ok(pedido);
+	}
+
 	@GetMapping(value = "/atualizado")
 	public ResponseEntity<List<Pedido>> listarAtualizado() {
 		return ResponseEntity.ok(pedidos);
@@ -82,5 +91,4 @@ public class PedidoResource {
 		pedidos.add(pedido);
 		return ResponseEntity.ok(pedido);
 	}
-
 }
